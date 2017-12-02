@@ -47,7 +47,7 @@ def get_parameters(model, bias):
 
 def main():
     print 'start'
-    file = '/home/yaohuaxu1/fcn32s_from_caffe.pth'
+    file = '/home/yaohuaxu1/FCN/fcn32s_from_caffe.pth'
     model = fcn.models.FCN32s()
     model.load_state_dict(torch.load(file))
     model = model.cuda()
