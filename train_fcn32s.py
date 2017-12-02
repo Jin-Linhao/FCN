@@ -108,7 +108,7 @@ def main():
        tester = Tester(cuda=True,
 		              model=model,
 		              test_loader=test_dataloader,
-		              val_loader=train_dataloader,
+		              val_loader=test_dataloader,
 		              max_iter=cfg[2]['max_iteration'],
 		              size_average=False
 		                )
