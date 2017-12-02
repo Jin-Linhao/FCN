@@ -49,8 +49,9 @@ def main():
     print 'start'
     file = '/home/yaohuaxu1/FCN/fcn32s_from_caffe.pth'
     model = fcn.models.FCN32s()
-    model.load_state_dict(torch.load(file))
+    
     model = model.cuda()
+    model.load_state_dict(torch.load(file))	
     print "start loading"
     model.score_fr = nn.Conv2d(4096, 2, 1)
     model.upscore = nn.ConvTranspose2d(2,2,64, stride=32, bias=False)
