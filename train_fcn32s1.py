@@ -64,23 +64,23 @@ def main():
     parser.add_argument("file", type=str)
     args = parser.parse_args()
     if args.save:
-	    vgg16 = torchvision.models.vgg16(pretrained = False)
-	    vgg16_state_dict = torch.load(file)
-	    vgg16.load_state_dict(vgg16_state_dict)	    
-	    model.copy_params_from_vgg16(vgg16)
-	    model = model.cuda()
-	    train_dataloader = torch.utils.data.DataLoader(
+        vgg16 = torchvision.models.vgg16(pretrained = False)
+        vgg16_state_dict = torch.load(file)
+        vgg16.load_state_dict(vgg16_state_dict)
+        model.copy_params_from_vgg16(vgg16)
+        model = model.cuda()
+        train_dataloader = torch.utils.data.DataLoader(
         ImageList(fileList="/home/yaohuaxu1/FCN/train.txt",
                   transform=transforms.Compose([
                       transforms.ToTensor(), ])),
             shuffle=True,
             num_workers=8,
             batch_size=1)
-	    start_epoch = 0
-	    start_iteration = 0
-	    cfg = configurations
-	    optimizer = torch.optim.Adam(model.parameters(), lr = 0.0001)
-	    trainer = Trainer(cuda=True,
+        start_epoch = 0
+        start_iteration = 0
+        cfg = configurations
+        optimizer = torch.optim.Adam(model.parameters(), lr = 0.0001)
+        trainer = Trainer(cuda=True,
 		              model=model,
 		              optimizer=optimizer,
 		              train_loader=train_dataloader,
@@ -88,14 +88,14 @@ def main():
 		              max_iter=cfg[1]['max_iteration'],
 		              size_average=False
 		                )
-	    trainer.epoch = start_epoch
-	    trainer.iteration = start_iteration
-	    trainer.train()
-	    torch.save(model.state_dict(), f=args.file)
+        trainer.epoch = start_epoch
+        trainer.iteration = start_iteration
+        trainer.train()
+        torch.save(model.state_dict(), f=args.file)
    if args.load:
-		model.load_state_dict(torch.load(f=args.file))
-		model = model.cuda()
-		test_dataloader = torch.utils.data.DataLoader(
+        model.load_state_dict(torch.load(f=args.file))
+        model = model.cuda()
+        test_dataloader = torch.utils.data.DataLoader(
         ImageList(fileList="/home/yaohuaxu1/FCN/train.txt",
                   transform=transforms.Compose([
                       transforms.ToTensor(), ])),
@@ -103,9 +103,9 @@ def main():
         num_workers=8,
         batch_size=1)
         start_epoch = 0
-		start_iteration = 0
-		cfg = configurations
-		tester = Tester(cuda=True,
+        start_iteration = 0
+        cfg = configurations
+        tester = Tester(cuda=True,
 		              model=model,
 		              test_loader=test_dataloader,
 		              val_loader=train_dataloader,
@@ -113,8 +113,8 @@ def main():
 		              size_average=False
 		                )
         tester.epoch = start_epoch
-	    tester.iteration = start_iteration
-	    tester.test()	
+        tester.iteration = start_iteration
+        tester.test()
 #    print "start loading"
 #    model.score_fr = nn.Conv2d(4096, 2, 1)
 #    model.upscore = nn.ConvTranspose2d(2,2,64, stride=32, bias=False)
