@@ -78,7 +78,7 @@ def main():
         weight_decay=cfg[1]['weight_decay'])
 
     print "going into trainer"
-    trainer = Trainer(cuda=False,
+    trainer = Trainer(cuda=True,
                       model=model,
                       optimizer=optim,
                       train_loader=train_dataloader,
