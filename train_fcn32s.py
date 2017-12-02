@@ -25,7 +25,6 @@ def get_parameters(model, bias):
         nn.Sequential,
         nn.MaxPool2d,
         nn.Dropout2d,
-	nn.ModuleList,
         fcn.models.FCN32s,
         # fcn.models.FCN16s,
         # fcn.models.FCN8s
@@ -54,7 +53,7 @@ def main():
     model = model.cuda()
     model.load_state_dict(torch.load(file))	
     print "start loading"
-    model.score_fr = nn.ModuleList([nn.Conv2d(4096, 2, 1)])
+    model.score_fr = nn.Conv2d(4096, 2, 1)
     model.upscore = nn.ConvTranspose2d(2,2,64, stride=32, bias=False)
     for m in model.modules():
         print m
