@@ -58,7 +58,6 @@ def main():
     model = model.cuda()
     for m in model.modules():
         print m
-    model.upscore = nn.ConvTranspose2d(2,2,64, stride=32,bias=False)
     train_dataloader = torch.utils.data.DataLoader(
         ImageList(fileList="/home/yaohuaxu1/FCN/train.txt",
                   transform=transforms.Compose([
