@@ -11,8 +11,8 @@ import torchvision.transforms as transforms
 configurations = {
     # same configuration as original fcn32s
     1: dict(
-	max_iteration = 10000,
-	lr = 1.0e-8,
+	max_iteration = 30000,
+	lr = 1.0e-10,
 	momentum = 0.99,
 	weight_decay = 0.0005,
 	interval_validate = 4000,
