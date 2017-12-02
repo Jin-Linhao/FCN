@@ -47,14 +47,14 @@ def get_parameters(model, bias):
 
 def main():
     print 'start'
-    file = '/home/yaohuaxu1/FCN/fcn32s_from_caffe.pth'
-    model = fcn.models.FCN32s()
+    file = '/home/yaohuaxu1/FCN/vgg16_from_caffe.pth'
+    model = fcn.models.FCN32s(n_class = 2)
     
     
-    model.load_state_dict(torch.load(file))	
-    print "start loading"
-    model.score_fr = nn.Conv2d(4096, 2, 1)
-    model.upscore = nn.ConvTranspose2d(2,2,64, stride=32, bias=False)
+    model.copy_params_from_vgg16(vgg16)	
+#    print "start loading"
+#    model.score_fr = nn.Conv2d(4096, 2, 1)
+#    model.upscore = nn.ConvTranspose2d(2,2,64, stride=32, bias=False)
     model = model.cuda()
     for m in model.modules():
         print m
@@ -68,20 +68,21 @@ def main():
     start_epoch = 0
     start_iteration = 0
     cfg = configurations
-    optim = torch.optim.SGD(
-        [
-            {'params': get_parameters(model, bias=False)},
-            {'params': get_parameters(model, bias=True),
-             'lr': cfg[1]['lr'] * 2, 'weight_decay': 0},
-        ],
-        lr=cfg[1]['lr'],
-        momentum=cfg[1]['momentum'],
-        weight_decay=cfg[1]['weight_decay'])
+    optimizer = torch.optim.Adam(net.parameters(), lr = 0.0001)
+#    optim = torch.optim.SGD(
+#        [
+#            {'params': get_parameters(model, bias=False)},
+#            {'params': get_parameters(model, bias=True),
+#             'lr': cfg[1]['lr'] * 2, 'weight_decay': 0},
+#       ],
+#       lr=cfg[1]['lr'],
+#       momentum=cfg[1]['momentum'],
+#       weight_decay=cfg[1]['weight_decay'])
 
     print "going into trainer"
     trainer = Trainer(cuda=True,
                       model=model,
-                      optimizer=optim,
+                      optimizer=optimizer,
                       train_loader=train_dataloader,
                       val_loader=train_dataloader,
                       max_iter=cfg[1]['max_iteration'],
