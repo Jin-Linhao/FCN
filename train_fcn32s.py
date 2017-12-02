@@ -47,7 +47,7 @@ def get_parameters(model, bias):
 
 def main():
     print 'start'
-    file = '/home/yaohuaxu1/FCN/vgg16_from_caffe.pth'
+    file = '/home/yaohuaxu1/FCN/vgg16-from-caffe.pth'
     model = fcn.models.FCN32s(n_class = 2)
     vgg16 = torchvision.models.vgg16(pretrained = False)
     vgg16_state_dict = torch.load(file)
