@@ -35,7 +35,6 @@ class Tester(object):
                 continue  # for resuming
             self.iteration = iteration
 
-            assert self.model.training
 
             if self.cuda:
                 data, target = data, target
