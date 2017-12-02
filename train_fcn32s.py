@@ -25,6 +25,7 @@ def get_parameters(model, bias):
         nn.Sequential,
         nn.MaxPool2d,
         nn.Dropout2d,
+	nn.ModuleList,
         fcn.models.FCN32s,
         # fcn.models.FCN16s,
         # fcn.models.FCN8s
