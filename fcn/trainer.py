@@ -84,7 +84,8 @@ class Trainer(object):
             image.save(img_name)
 
             loss = cross_entropy(score, target, size_average = self.size_average)
-            print "loss", loss.data
+            if img_ind % 10 == 0:
+                print "loss", loss.data
             #loss = loss / len(data)
             if np.isnan(np.float(loss.data[0])):
                 raise ValueError('loss is nan while training')
