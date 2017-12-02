@@ -75,9 +75,9 @@ class Trainer(object):
             n,c,h,w = score.data.shape
             image = score.data.max(1)[1]
             image = image.cpu().numpy().astype(np.uint8)
-            print image.shape
+         #   print image.shape
             image = image.transpose(1,2,0).reshape(h,w)
-            print image.shape
+          #  print image.shape
             image = Image.fromarray(image)
             img_name = ''.join(["saved_img",str(img_ind),'.png'])
             img_ind = img_ind + 1
