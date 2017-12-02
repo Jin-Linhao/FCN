@@ -49,7 +49,6 @@ def main():
     print 'start'
     file = '/home/yaohuaxu1/fcn32s_from_caffe.pth'
     model = fcn.models.FCN32s()
-    torch.manual_seed(1337)
     model.load_state_dict(torch.load(file))
     model = model.cuda()
     print "start loading"
