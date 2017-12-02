@@ -73,14 +73,14 @@ def main():
         ImageList(fileList="/home/yaohuaxu1/FCN/train.txt",
                   transform=transforms.Compose([
                       transforms.ToTensor(), ])),
-        shuffle=True,
-        num_workers=8,
-        batch_size=1)
-		start_epoch = 0
-		start_iteration = 0
-		cfg = configurations
-		optimizer = torch.optim.Adam(model.parameters(), lr = 0.0001)
-		trainer = Trainer(cuda=True,
+            shuffle=True,
+            num_workers=8,
+            batch_size=1)
+	    start_epoch = 0
+	    start_iteration = 0
+	    cfg = configurations
+	    optimizer = torch.optim.Adam(model.parameters(), lr = 0.0001)
+	    trainer = Trainer(cuda=True,
 		              model=model,
 		              optimizer=optimizer,
 		              train_loader=train_dataloader,
@@ -92,7 +92,7 @@ def main():
 	    trainer.iteration = start_iteration
 	    trainer.train()
 	    torch.save(model.state_dict(), f=args.file)
-	if args.load:
+   if args.load:
 		model.load_state_dict(torch.load(f=args.file))
 		model = model.cuda()
 		test_dataloader = torch.utils.data.DataLoader(
