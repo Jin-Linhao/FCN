@@ -70,7 +70,7 @@ def main():
     start_epoch = 0
     start_iteration = 0
     cfg = configurations
-    optimizer = torch.optim.Adam(net.parameters(), lr = 0.0001)
+    optimizer = torch.optim.Adam(model.parameters(), lr = 0.0001)
 #    optim = torch.optim.SGD(
 #        [
 #            {'params': get_parameters(model, bias=False)},
