@@ -65,6 +65,8 @@ class ImageList(data.Dataset):
         # print "hello"
         img = self.img_loader(os.path.join("/home/yaohuaxu1/FCN/data/images", imgPath1))
         lbl = self.img_loader(os.path.join("/home/yaohuaxu1/FCN/data/labels", imgPath2))
+        img = img.resize((256, 256))
+        lbl = lbl.resize((256, 256))
         img, lbl = self.transform(img, lbl)
         return img, lbl
 
