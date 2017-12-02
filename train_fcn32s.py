@@ -93,28 +93,28 @@ def main():
         trainer.train()
         torch.save(model.state_dict(), f=args.file)
    if args.load:
-        model.load_state_dict(torch.load(f=args.file))
-        model = model.cuda()
-        test_dataloader = torch.utils.data.DataLoader(
-        ImageList(fileList="/home/yaohuaxu1/FCN/train.txt",
+       model.load_state_dict(torch.load(f=args.file))
+       model = model.cuda()
+       test_dataloader = torch.utils.data.DataLoader(
+           ImageList(fileList="/home/yaohuaxu1/FCN/train.txt",
                   transform=transforms.Compose([
                       transforms.ToTensor(), ])),
-        shuffle=False,
-        num_workers=8,
-        batch_size=1)
-        start_epoch = 0
-        start_iteration = 0
-        cfg = configurations
-        tester = Tester(cuda=True,
+           shuffle=False,
+           num_workers=8,
+           batch_size=1)
+       start_epoch = 0
+       start_iteration = 0
+       cfg = configurations
+       tester = Tester(cuda=True,
 		              model=model,
 		              test_loader=test_dataloader,
 		              val_loader=train_dataloader,
 		              max_iter=cfg[2]['max_iteration'],
 		              size_average=False
 		                )
-        tester.epoch = start_epoch
-        tester.iteration = start_iteration
-        tester.test()
+       tester.epoch = start_epoch
+       tester.iteration = start_iteration
+       tester.test()
 #    print "start loading"
 #    model.score_fr = nn.Conv2d(4096, 2, 1)
 #    model.upscore = nn.ConvTranspose2d(2,2,64, stride=32, bias=False)
