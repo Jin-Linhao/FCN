@@ -1,6 +1,6 @@
 import os
 import os.path as osp
-import torchvision.models as models
+import torchvision
 import torch
 import torch.nn as nn
 import fcn
@@ -49,7 +49,9 @@ def main():
     print 'start'
     file = '/home/yaohuaxu1/FCN/vgg16_from_caffe.pth'
     model = fcn.models.FCN32s(n_class = 2)
-    
+    vgg16 = torchvision.models.vgg16(pretrained = False)
+    vgg16_state_dict = torch.load(file)
+    vgg16.load_state_dict(state_dict)
     
     model.copy_params_from_vgg16(vgg16)	
 #    print "start loading"
