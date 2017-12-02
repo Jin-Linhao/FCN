@@ -51,7 +51,7 @@ def main():
     model = fcn.models.FCN32s(n_class = 2)
     vgg16 = torchvision.models.vgg16(pretrained = False)
     vgg16_state_dict = torch.load(file)
-    vgg16.load_state_dict(state_dict)
+    vgg16.load_state_dict(vgg16_state_dict)
     
     model.copy_params_from_vgg16(vgg16)	
 #    print "start loading"
