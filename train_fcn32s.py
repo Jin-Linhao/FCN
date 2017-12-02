@@ -91,7 +91,7 @@ def main():
     trainer.epoch = start_epoch
     trainer.iteration = start_iteration
     trainer.train()
-    torch.save(model.state_dict(), '/home/yaohuaxu1/FCN')
+    torch.save(model.state_dict(), f = 'fcn32s_model')
 
 
 if __name__ == '__main__':
