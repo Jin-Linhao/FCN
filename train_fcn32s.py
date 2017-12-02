@@ -92,7 +92,7 @@ def main():
         trainer.iteration = start_iteration
         trainer.train()
         torch.save(model.state_dict(), f=args.file)
-   if args.load:
+    if args.load:
        model.load_state_dict(torch.load(f=args.file))
        model = model.cuda()
        test_dataloader = torch.utils.data.DataLoader(
