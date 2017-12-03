@@ -65,7 +65,7 @@ class Tester(object):
             image = image.cpu().numpy().astype(np.uint8)
             image = image.transpose(1,2,0).reshape(h,w)
             image = Image.fromarray(image)
-            img_name = ''.join(["saved_img",str(img_ind),'.png'])
+            img_name = ''.join(["test_saved_img",str(img_ind),'.png'])
             img_ind = img_ind + 1
             image.save(img_name)
 
