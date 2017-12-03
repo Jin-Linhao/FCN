@@ -4,6 +4,7 @@ import os.path as osp
 import torch
 from train_fcn32s import get_parameters
 from fcn.datasets.mli import ImageList
+from fcn.datasets.mli import ImageTest
 from fcn import Trainer
 import torchvision.transforms as transforms
 from fcn.models import FCN16s
@@ -31,7 +32,7 @@ configurations = {
         interval_validate=4000,
     ),
     2: dict(
-        max_iteration=404,
+        max_iteration=1,
         lr=1.0e-5,
         momentum=0.99,
         weight_decay=0.0005,
@@ -42,7 +43,7 @@ configurations = {
 
 
 def main():
-    file = '/home/yaohuaxu1/FCN/fcn32s_model'
+    file = '/home/yaohuaxu1/FCN/fcn16s_model'
     model = fcn.models.FCN8s(n_class=2)
     parser = argparse.ArgumentParser()
     parser.add_argument('--load', action='store_true')
@@ -50,10 +51,10 @@ def main():
     parser.add_argument("file", type=str)
     args = parser.parse_args()
     if args.save:
-        fcn32s = fcn.models.FCN16s(n_class=2)
-        fcn32s_state_dict = torch.load(file)
-        fcn32s.load_state_dict(fcn32s_state_dict)
-        model.copy_params_from_fcn32s(fcn32s)
+        fcn16s = fcn.models.FCN16s(n_class=2)
+        fcn16s_state_dict = torch.load(file)
+        fcn16s.load_state_dict(fcn16s_state_dict)
+        model.copy_params_from_fcn16s(fcn16s)
         model = model.cuda()
         train_dataloader = torch.utils.data.DataLoader(
             ImageList(fileList="/home/yaohuaxu1/FCN/train.txt",
@@ -82,7 +83,7 @@ def main():
         model.load_state_dict(torch.load(f=args.file))
         model = model.cuda()
         test_dataloader = torch.utils.data.DataLoader(
-            ImageList(fileList="/home/yaohuaxu1/FCN/train.txt",
+            ImageTest(fileList="/home/yaohuaxu1/FCN/test.txt",
                       transform=transforms.Compose([
                           transforms.ToTensor(), ])),
             shuffle=False,
