@@ -111,7 +111,7 @@ class ImageTest(data.Dataset):
         # print "hello"
         img = self.img_loader(os.path.join("/home/yaohuaxu1/FCN/data/test", imgPath1))
         img = img.resize((256, 256))
-        img = self.transform(img, lbl)
+        img = self.transform(img)
         return img
 
     def __len__(self):
