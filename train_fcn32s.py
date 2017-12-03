@@ -57,7 +57,7 @@ def get_parameters(model, bias):
             raise ValueError('Unexpected module: %s' % str(m))
 
 def main():
-    file = '/home/yaohuaxu1/FCN/vgg16-from-caffe.pth'
+    file = '/home/yaohuaxu1/FCN/vgg16_from_caffe.pth'
     model = fcn.models.FCN32s(n_class = 2)
     parser = argparse.ArgumentParser()
     parser.add_argument('--load', action = 'store_true')
