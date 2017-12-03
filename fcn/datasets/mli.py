@@ -117,7 +117,7 @@ class ImageTest(data.Dataset):
     def __len__(self):
         return len(self.imgList)
 
-    def transform(self, img, lbl):
+    def transform(self, img):
         img = np.array(img)
         img = img[:, :, ::-1]  # RGB -> BGR
         img = img.astype(np.float64)
@@ -125,8 +125,8 @@ class ImageTest(data.Dataset):
         img = img.transpose(2, 0, 1)
         img = torch.from_numpy(img).float()
         return img
-
-
+    
+  
 
 
 # def main():
