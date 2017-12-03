@@ -83,7 +83,7 @@ def main():
         model.load_state_dict(torch.load(f=args.file))
         model = model.cuda()
         test_dataloader = torch.utils.data.DataLoader(
-            ImageList(fileList="/home/yaohuaxu1/FCN/test.txt",
+            ImageTest(fileList="/home/yaohuaxu1/FCN/test.txt",
                       transform=transforms.Compose([
                           transforms.ToTensor(), ])),
             shuffle=False,
