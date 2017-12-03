@@ -4,6 +4,7 @@ import os.path as osp
 import torch
 from train_fcn32s import get_parameters
 from fcn.datasets.mli import ImageList
+from fcn.datasets.mli import ImageTest
 from fcn import Trainer
 import torchvision.transforms as transforms
 from fcn.models import FCN16s
@@ -82,7 +83,7 @@ def main():
         model.load_state_dict(torch.load(f=args.file))
         model = model.cuda()
         test_dataloader = torch.utils.data.DataLoader(
-            ImageList(fileList="/home/yaohuaxu1/FCN/test.txt",
+            ImageTest(fileList="/home/yaohuaxu1/FCN/test.txt",
                       transform=transforms.Compose([
                           transforms.ToTensor(), ])),
             shuffle=False,
