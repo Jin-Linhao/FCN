@@ -79,9 +79,9 @@ class Trainer(object):
             image = image.transpose(1,2,0).reshape(h,w)
           #  print image.shape
             image = Image.fromarray(image)
-            img_name = ''.join(["saved_img",str(img_ind),'.png'])
+            #img_name = ''.join(["saved_img",str(img_ind),'.png'])
             img_ind = img_ind + 1
-            image.save(img_name)
+            #image.save(img_name)
 
             loss = cross_entropy(score, target, size_average = self.size_average)
             if img_ind % 10 == 0:
