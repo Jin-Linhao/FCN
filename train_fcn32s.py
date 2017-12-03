@@ -21,7 +21,7 @@ configurations = {
 	interval_validate = 4000,
     ),
     2: dict(
-	max_iteration = 404,
+	max_iteration = 2,
 	lr = 1.0e-5,
 	momentum = 0.99,
 	weight_decay = 0.0005,
@@ -97,7 +97,7 @@ def main():
        model.load_state_dict(torch.load(f=args.file))
        model = model.cuda()
        test_dataloader = torch.utils.data.DataLoader(
-           ImageTest(fileList="/home/yaohuaxu1/FCN/train.txt",
+           ImageTest(fileList="/home/yaohuaxu1/FCN/test.txt",
                   transform=transforms.Compose([
                       transforms.ToTensor(), ])),
            shuffle=False,
