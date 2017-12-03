@@ -47,7 +47,7 @@ def default_test_reader(fileList):
     with open(fileList, 'r') as file:
         for line in file.readlines():
             imgshortList = []
-            imgPath1 = line
+            imgPath1 = line.strip()
             imgList.append(imgPath1)
     return imgList
 
