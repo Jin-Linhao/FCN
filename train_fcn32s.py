@@ -5,6 +5,7 @@ import torch
 import torch.nn as nn
 import fcn
 from fcn.datasets.mli import ImageList
+from fcn.datasets.mli import ImageTest
 from fcn import Trainer
 import torchvision.transforms as transforms
 import argparse
@@ -96,7 +97,7 @@ def main():
        model.load_state_dict(torch.load(f=args.file))
        model = model.cuda()
        test_dataloader = torch.utils.data.DataLoader(
-           ImageList(fileList="/home/yaohuaxu1/FCN/train.txt",
+           ImageTest(fileList="/home/yaohuaxu1/FCN/train.txt",
                   transform=transforms.Compose([
                       transforms.ToTensor(), ])),
            shuffle=False,
