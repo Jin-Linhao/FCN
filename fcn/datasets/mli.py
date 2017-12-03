@@ -84,6 +84,37 @@ class ImageList(data.Dataset):
         img = torch.from_numpy(img).float()
         lbl = torch.from_numpy(lbl).long()
         return img, lbl
+    
+    
+    
+class ImageTest(data.Dataset):
+    def __init__(self, fileList, transform=None, list_reader=default_list_reader, img_loader=img_loader):
+        # self.root      = root
+        self.imgList   = list_reader(fileList)
+        # self._transform = transform
+        self.img_loader = img_loader
+        self.mean_bgr = np.array([55.9615, 70.0644, 77.1899])
+
+    def __getitem__(self, index):
+        final = []
+        imgPath1 = self.imgList[index]
+        # print "hello"
+        img = self.img_loader(os.path.join("/home/yaohuaxu1/FCN/data/test", imgPath1))
+        img = img.resize((256, 256))
+        img = self.transform(img, lbl)
+        return img
+
+    def __len__(self):
+        return len(self.imgList)
+
+    def transform(self, img, lbl):
+        img = np.array(img)
+        img = img[:, :, ::-1]  # RGB -> BGR
+        img = img.astype(np.float64)
+        img -= self.mean_bgr
+        img = img.transpose(2, 0, 1)
+        img = torch.from_numpy(img).float()
+        return img
 
 
 
