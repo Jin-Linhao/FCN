@@ -98,7 +98,7 @@ class ImageList(data.Dataset):
     
     
 class ImageTest(data.Dataset):
-    def __init__(self, fileList, transform=None, list_reader=default_test_reader, img_loader=img_loader):
+    def __init__(self, fileList, transform=None, list_reader=default_list_reader, img_loader=img_loader):
         # self.root      = root
         self.imgList   = list_reader(fileList)
         # self._transform = transform
@@ -107,25 +107,29 @@ class ImageTest(data.Dataset):
 
     def __getitem__(self, index):
         final = []
-        imgPath1 = self.imgList[index]
+        [imgPath1, imgPath2] = self.imgList[index]
         # print "hello"
-        img = self.img_loader(os.path.join("/home/yaohuaxu1/FCN/data/test", imgPath1))
+        img = self.img_loader(os.path.join("/home/yaohuaxu1/FCN/data/test_img", imgPath1))
+        lbl = self.img_loader(os.path.join("/home/yaohuaxu1/FCN/data/test_label", imgPath2))
         img = img.resize((256, 256))
-        img = self.transform(img)
-        return img
+        lbl = lbl.resize((256, 256))
+        img, lbl = self.transform(img, lbl)
+        return img, lbl
 
     def __len__(self):
         return len(self.imgList)
 
-    def transform(self, img):
+    def transform(self, img, lbl):
         img = np.array(img)
+        lbl = np.array(lbl).astype(np.int32)
+        lbl[lbl == 255] = -1
         img = img[:, :, ::-1]  # RGB -> BGR
         img = img.astype(np.float64)
         img -= self.mean_bgr
         img = img.transpose(2, 0, 1)
         img = torch.from_numpy(img).float()
-        return img
-    
+        lbl = torch.from_numpy(lbl).long()
+        return img, lbl
   
 
 

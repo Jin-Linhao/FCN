@@ -1,2 +1,2 @@
-hubble_earth.jpg
-mock_satellite.jpg
+Raw1.jpg label1.png
+Raw2.jpg label2.png
