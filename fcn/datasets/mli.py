@@ -42,6 +42,16 @@ def default_list_reader(fileList):
             imgList.append(imgshortList)
     return imgList
 
+def default_test_reader(fileList):
+    imgList = []
+    with open(fileList, 'r') as file:
+        for line in file.readlines():
+            imgshortList = []
+            imgPath1 = line
+            imgList.append(imgPath1)
+    return imgList
+
+
 def img_loader(path):
     img = Image.open(path)
     return img
@@ -88,7 +98,7 @@ class ImageList(data.Dataset):
     
     
 class ImageTest(data.Dataset):
-    def __init__(self, fileList, transform=None, list_reader=default_list_reader, img_loader=img_loader):
+    def __init__(self, fileList, transform=None, list_reader=default_test_reader, img_loader=img_loader):
         # self.root      = root
         self.imgList   = list_reader(fileList)
         # self._transform = transform
