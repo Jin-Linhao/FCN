@@ -2,12 +2,15 @@ import math
 import os
 import os.path as osp
 import torch
-import fcn
 import numpy as np
 from torch.autograd import Variable
 import torch.nn.functional as F
 import tqdm
 from PIL import Image
+import viz
+import skimage.io
+import utils
+import collections
 
 def cross_entropy(input, target, weight=None, size_average=True):
 # input: (n, c, h, w), target: (n, h, w)
@@ -37,6 +40,21 @@ class Tester(object):
         self.iteration = 0
         self.max_iter = max_iter
         self.best_mean_iu = 0
+        self.log_headers = [
+            'epoch',
+            'iteration',
+            'elapsed_time',
+            'train/loss',
+            'train/acc',
+            'train/acc_cls',
+            'train/mean_iu',
+            'train/fwavacc',
+            'valid/loss',
+            'valid/acc',
+            'valid/acc_cls',
+            'valid/mean_iu',
+            'valid/fwavacc',
+        ]
     
     def test_epoch(self):
         self.model.eval()
@@ -62,6 +80,14 @@ class Tester(object):
             score = self.model(data)
             n,c,h,w = score.data.shape
             image = score.data.max(1)[1]
+            img, lbl_pred, lbl_true = data.cpu(), image.cpu(), target.cpu()
+            visual = viz.visualize_segmentation(
+                lbl_pred=lbl_pred, lbl_true=lbl_true,
+                img=img, n_class=2)
+            viz_name = ''.join(['visualizations_valid',
+                               'iter%08d.jpg' % img_ind])
+            skimage.io.imsave(viz_name, visual)
+
             image = image.cpu().numpy().astype(np.uint8)
             image = image.transpose(1,2,0).reshape(h,w)
             image = Image.fromarray(image)
@@ -83,10 +109,11 @@ class Tester(object):
             lbl_true = target.data.cpu().numpy()
             for lt, lp in zip(lbl_true, lbl_pred):
                 acc, acc_cls, mean_iu, fwavacc = \
-                    fcn.utils.label_accuracy_score(
+                    utils.label_accuracy_score(
                         [lt], [lp], n_class=n_class)
                 metrics.append((acc, acc_cls, mean_iu, fwavacc))
             metrics = np.mean(metrics, axis=0)
+            print 'metrics', metrics
 
             if self.iteration >= self.max_iter:
                 break
@@ -99,5 +126,11 @@ class Tester(object):
             self.test_epoch()
             if self.iteration >= self.max_iter:
                 break
+
+    def _write_log(self, **kwargs):
+        log = collections.defaultdict(str)
+        log.update(kwargs)
+        with open(osp.join(self.out, 'log.csv'), 'a') as f:
+            f.write(','.join(str(log[h]) for h in self.log_headers) + '\n')
 
 
