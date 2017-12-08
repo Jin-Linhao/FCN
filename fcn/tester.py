@@ -113,7 +113,7 @@ class Tester(object):
                 metrics.append((acc, acc_cls, mean_iu, fwavacc))
             metrics = np.mean(metrics, axis=0)
             metrics_dic[img_ind - 1] = metrics
-            print 'metrics', metrics_ls
+            print 'metrics', metrics_dic
 
             if self.iteration >= self.max_iter:
                 break
