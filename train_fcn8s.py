@@ -11,14 +11,12 @@ from fcn.models import FCN16s
 from fcn.models import FCN32s
 
 import os
-import os.path as osp
 import torchvision
 import torch
 import torch.nn as nn
 import fcn
 from fcn.datasets.mli import ImageList
 from fcn import Trainer
-import torchvision.transforms as transforms
 import argparse
 from fcn import Tester
 

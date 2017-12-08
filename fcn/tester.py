@@ -40,6 +40,16 @@ class Tester(object):
         self.iteration = 0
         self.max_iter = max_iter
         self.best_mean_iu = 0
+        self.mean_bgr = np.array([104.00698793, 116.66876762, 122.67891434])
+
+    def untransform(self, img, lbl):
+        img = img.numpy()
+        img = img.transpose(1, 2, 0)
+        img += self.mean_bgr
+        img = img.astype(np.uint8)
+        img = img[:, :, ::-1]
+        lbl = lbl.numpy([55.9615, 70.0644, 77.1899])
+        return img, lbl
     
     def test_epoch(self):
         self.model.eval()
@@ -65,7 +75,10 @@ class Tester(object):
             score = self.model(data)
             n,c,h,w = score.data.shape
             image = score.data.max(1)[1]
-            img, lbl_pred, lbl_true = (data.data).cpu().numpy(), image.cpu().numpy(), (target.data).cpu().numpy()
+            img = data.data.cpu()
+            lbl_pred = image.cpu().numpy()[:, :, :]
+            lbl_true = target.data.cpu()
+            img, lbl_true = self.untransform(img, lbl_true)
             visual = viz.visualize_segmentation(
                 lbl_pred=lbl_pred, lbl_true=lbl_true,
                 img=img, n_class=2)
@@ -112,10 +125,5 @@ class Tester(object):
             if self.iteration >= self.max_iter:
                 break
 
-    def _write_log(self, **kwargs):
-        log = collections.defaultdict(str)
-        log.update(kwargs)
-        with open(osp.join(self.out, 'log.csv'), 'a') as f:
-            f.write(','.join(str(log[h]) for h in self.log_headers) + '\n')
 
 
