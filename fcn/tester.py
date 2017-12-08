@@ -75,7 +75,7 @@ class Tester(object):
             score = self.model(data)
             n,c,h,w = score.data.shape
             image = score.data.max(1)[1]
-            img = data.data.cpu()
+
 
 
             image = image.cpu().numpy().astype(np.uint8)
@@ -95,9 +95,10 @@ class Tester(object):
             measure accuracy by fcn.utils.label_accuracy_score
             """
             metrics = []
+            img = data.data.cpu()
             lbl_pred = score.data.max(1)[1].cpu().numpy()[:, :, :]
             lbl_true = target.data.cpu().numpy()
-            for lt, lp in zip(img, lbl_true, lbl_pred):
+            for img, lt, lp in zip(img, lbl_true, lbl_pred):
                 img, lt = self.untransform(img, lt)
                 visual = viz.visualize_segmentation(
                     lbl_pred=lp, lbl_true=lt,
