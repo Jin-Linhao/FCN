@@ -65,7 +65,7 @@ class Tester(object):
             score = self.model(data)
             n,c,h,w = score.data.shape
             image = score.data.max(1)[1]
-            img, lbl_pred, lbl_true = (data.data).cpu().numpy(), (image.data).cpu().numpy(), (target.data).cpu().numpy()
+            img, lbl_pred, lbl_true = (data.data).cpu().numpy(), image.cpu().numpy(), (target.data).cpu().numpy()
             visual = viz.visualize_segmentation(
                 lbl_pred=lbl_pred, lbl_true=lbl_true,
                 img=img, n_class=2)
