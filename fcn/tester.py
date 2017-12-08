@@ -97,7 +97,7 @@ class Tester(object):
             metrics = []
             img = data.data.cpu()
             lbl_pred = score.data.max(1)[1].cpu().numpy()[:, :, :]
-            lbl_true = target.data.cpu().numpy()
+            lbl_true = target.data.cpu()
             for img, lt, lp in zip(img, lbl_true, lbl_pred):
                 img, lt = self.untransform(img, lt)
                 visual = viz.visualize_segmentation(
