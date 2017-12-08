@@ -55,6 +55,7 @@ class Tester(object):
         self.model.eval()
         n_class = 21
         img_ind = 0
+        metrics_ls = []
 
         for batch_idx, (data, target) in tqdm.tqdm(
                 enumerate(self.test_loader), total=len(self.test_loader),
@@ -111,7 +112,8 @@ class Tester(object):
                         [lt], [lp], n_class=n_class)
                 metrics.append((acc, acc_cls, mean_iu, fwavacc))
             metrics = np.mean(metrics, axis=0)
-            print 'metrics', metrics
+            metrics_ls.append(metrics)
+            print 'metrics', metrics_ls
 
             if self.iteration >= self.max_iter:
                 break
