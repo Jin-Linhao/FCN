@@ -40,7 +40,7 @@ class Tester(object):
         self.iteration = 0
         self.max_iter = max_iter
         self.best_mean_iu = 0
-        self.mean_bgr = np.array([104.00698793, 116.66876762, 122.67891434])
+        self.mean_bgr = np.array([55.9615, 70.0644, 77.1899])
 
     def untransform(self, img, lbl):
         img = img.numpy()
@@ -48,7 +48,7 @@ class Tester(object):
         img += self.mean_bgr
         img = img.astype(np.uint8)
         img = img[:, :, ::-1]
-        lbl = lbl.numpy([55.9615, 70.0644, 77.1899])
+        lbl = lbl.numpy()
         return img, lbl
     
     def test_epoch(self):
