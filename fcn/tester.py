@@ -54,7 +54,7 @@ class Tester(object):
     def test_epoch(self):
         self.model.eval()
         n_class = 21
-        img_ind = 1
+        img_ind = 0
 
         for batch_idx, (data, target) in tqdm.tqdm(
                 enumerate(self.test_loader), total=len(self.test_loader),
