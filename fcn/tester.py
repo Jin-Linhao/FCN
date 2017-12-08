@@ -40,21 +40,6 @@ class Tester(object):
         self.iteration = 0
         self.max_iter = max_iter
         self.best_mean_iu = 0
-        self.log_headers = [
-            'epoch',
-            'iteration',
-            'elapsed_time',
-            'train/loss',
-            'train/acc',
-            'train/acc_cls',
-            'train/mean_iu',
-            'train/fwavacc',
-            'valid/loss',
-            'valid/acc',
-            'valid/acc_cls',
-            'valid/mean_iu',
-            'valid/fwavacc',
-        ]
     
     def test_epoch(self):
         self.model.eval()
