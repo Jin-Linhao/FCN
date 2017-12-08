@@ -76,15 +76,7 @@ class Tester(object):
             n,c,h,w = score.data.shape
             image = score.data.max(1)[1]
             img = data.data.cpu()
-            lbl_pred = image.cpu().numpy()[:, :, :]
-            lbl_true = target.data.cpu()
-            img, lbl_true = self.untransform(img, lbl_true)
-            visual = viz.visualize_segmentation(
-                lbl_pred=lbl_pred, lbl_true=lbl_true,
-                img=img, n_class=2)
-            viz_name = ''.join(['visualizations_valid',
-                               'iter%08d.jpg' % img_ind])
-            skimage.io.imsave(viz_name, visual)
+
 
             image = image.cpu().numpy().astype(np.uint8)
             image = image.transpose(1,2,0).reshape(h,w)
@@ -105,7 +97,14 @@ class Tester(object):
             metrics = []
             lbl_pred = score.data.max(1)[1].cpu().numpy()[:, :, :]
             lbl_true = target.data.cpu().numpy()
-            for lt, lp in zip(lbl_true, lbl_pred):
+            for lt, lp in zip(img, lbl_true, lbl_pred):
+                img, lt = self.untransform(img, lt)
+                visual = viz.visualize_segmentation(
+                    lbl_pred=lp, lbl_true=lt,
+                    img=img, n_class=2)
+                viz_name = ''.join(['visualizations_valid',
+                                    'iter%08d.jpg' % img_ind])
+                skimage.io.imsave(viz_name, visual)
                 acc, acc_cls, mean_iu, fwavacc = \
                     utils.label_accuracy_score(
                         [lt], [lp], n_class=n_class)
