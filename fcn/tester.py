@@ -105,7 +105,7 @@ class Tester(object):
                     lbl_pred=lp, lbl_true=lt,
                     img=img, n_class=2)
                 viz_name = ''.join(['visualizations_valid',
-                                    'iter%08d.jpg' % img_ind - 1])
+                                    'iter%08d.jpg' % (img_ind - 1)])
                 skimage.io.imsave(viz_name, visual)
                 acc, acc_cls, mean_iu, fwavacc = \
                     utils.label_accuracy_score(
