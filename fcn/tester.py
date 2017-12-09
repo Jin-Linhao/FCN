@@ -117,7 +117,7 @@ class Tester(object):
                 feats = create_pairwise_gaussian(sdims=(5, 5), shape=img.shape[:2])
                 d.addPairwiseEnergy(feats, compat=3,kernel=dcrf.DIAG_KERNEL,normalization=dcrf.NORMALIZE_SYMMETRIC)
                 Q = d.inference(5)
-                res = np.argmax(Q, axis=0).reshape((img.shape[0], img.shape[1]))
+                res = np.argmax(Q, axis=0).reshape((img.shape[0], img.shape[1])).astype(np.uint8)
                 print res.dtype
                 print np.unique(res)
                 visual = viz.visualize_segmentation(
