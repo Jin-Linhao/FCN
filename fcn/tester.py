@@ -111,7 +111,7 @@ class Tester(object):
                 unary = np.ascontiguousarray(unary)
                 d = dcrf.DenseCRF(256 * 256, 2)
                 d.setUnaryEnergy(unary)
-                feats = create_pairwise_gaussian(sdims=(10, 10), shape=img.shape[:2])
+                feats = create_pairwise_gaussian(sdims=(5, 5), shape=img.shape[:2])
                 d.addPairwiseEnergy(feats, compat=3,kernel=dcrf.DIAG_KERNEL,normalization=dcrf.NORMALIZE_SYMMETRIC)
                 Q = d.inference(5)
                 res = np.argmax(Q, axis=0).reshape((img.shape[0], img.shape[1]))
