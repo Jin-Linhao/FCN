@@ -123,6 +123,7 @@ class Tester(object):
                 visual = viz.visualize_segmentation(
                     lbl_pred=lp, lbl_true=lt,
                     img=img, n_class=2)
+                print visual.dtype
                 viz_name = ''.join(['visualizations_valid',
                                     'iter%02d.jpg' % (img_ind - 1)])
                 crf_name = ''.join(['visualizations_valid',
