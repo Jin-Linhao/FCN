@@ -105,7 +105,8 @@ class Tester(object):
             lbl_true = target.data.cpu()
             for img, lt, lp in zip(img, lbl_true, lbl_pred):
                 img, lt = self.untransform(img, lt)
-                skimage.io.imsave('img.jpg', img)
+                img_wa = ''.join(["img",str(img_ind),'.png'])
+                skimage.io.imsave(img_wa, img)
                 softmax = -F.log_softmax(score)
                 softmax = softmax.view((2,h,w)).data.cpu().numpy()
                 unary = softmax_to_unary(softmax)
