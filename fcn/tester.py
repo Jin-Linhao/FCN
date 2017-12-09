@@ -60,6 +60,7 @@ class Tester(object):
         n_class = 21
         img_ind = 1
         metrics_dic = {}
+        metrics_dic_crf = {}
 
         for batch_idx, (data, target) in tqdm.tqdm(
                 enumerate(self.test_loader), total=len(self.test_loader),
@@ -100,6 +101,7 @@ class Tester(object):
             measure accuracy by fcn.utils.label_accuracy_score
             """
             metrics = []
+            metrics_crf = []
             img = data.data.cpu()
             lbl_pred = score.data.max(1)[1].cpu().numpy()[:, :, :]
             lbl_true = target.data.cpu()
@@ -132,11 +134,20 @@ class Tester(object):
                 skimage.io.imsave(viz_name, visual)
                 acc, acc_cls, mean_iu, fwavacc = \
                     utils.label_accuracy_score(
-                        [lt], [lp], n_class=n_class)
+                        [lt], [lp], n_class=2)
                 metrics.append((acc, acc_cls, mean_iu, fwavacc))
+                
+                acc_crf, acc_cls_crf, mean_iu_crf, fwavacc_crf = \
+                    utils.label_accuracy_score(
+                        [lt], [res], n_class=2)
+                metrics_crf.append((acc_crf, acc_cls_crf, mean_iu_crf, fwavacc_crf))
+                
             metrics = np.mean(metrics, axis=0)
             metrics_dic[img_ind - 1] = metrics
+            metrics_crf_ = np.mean(metrics_crf, axis=0)
+            metrics_dic_crf[img_ind - 1] = metrics_crf_
             print 'metrics', metrics_dic
+            print 'metrics_crf', metrics_dic_crf
 
             if self.iteration >= self.max_iter:
                 break
