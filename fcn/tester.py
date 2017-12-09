@@ -106,7 +106,7 @@ class Tester(object):
             for img, lt, lp in zip(img, lbl_true, lbl_pred):
                 img, lt = self.untransform(img, lt)
                 softmax = -F.log_softmax(score)
-                softmax = softmax.view((2,h,w))
+                softmax = softmax.view((2,h,w)).data.cpu().numpy()
                 unary = softmax_to_unary(softmax)
                 unary = np.ascontiguousarray(unary)
                 d = dcrf.DenseCRF(256 * 256, 2)
