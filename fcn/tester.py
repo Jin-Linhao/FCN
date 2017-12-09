@@ -112,7 +112,7 @@ class Tester(object):
                 print 'softmax_shape', softmax.shape
                 unary = softmax_to_unary(softmax)
                 unary = np.ascontiguousarray(unary)
-                d = dcrf.DenseCRF(256, 256, 2)
+                d = dcrf.DenseCRF(256*256, 2)
                 d.setUnaryEnergy(unary)
                 feats = create_pairwise_gaussian(sdims=(5, 5), shape=img.shape[:2])
                 d.addPairwiseEnergy(feats, compat=3,kernel=dcrf.DIAG_KERNEL,normalization=dcrf.NORMALIZE_SYMMETRIC)
