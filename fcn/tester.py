@@ -109,23 +109,23 @@ class Tester(object):
                 skimage.io.imsave(img_wa, img)
                 softmax = -F.log_softmax(score)
                 softmax = softmax.view((2,h,w)).data.cpu().numpy()
+                print 'softmax_shape', softmax.shape
                 unary = softmax_to_unary(softmax)
                 unary = np.ascontiguousarray(unary)
-                d = dcrf.DenseCRF(256 * 256, 2)
+                d = dcrf.DenseCRF(256, 256, 2)
                 d.setUnaryEnergy(unary)
                 feats = create_pairwise_gaussian(sdims=(5, 5), shape=img.shape[:2])
                 d.addPairwiseEnergy(feats, compat=3,kernel=dcrf.DIAG_KERNEL,normalization=dcrf.NORMALIZE_SYMMETRIC)
                 Q = d.inference(5)
                 res = np.argmax(Q, axis=0).reshape((img.shape[0], img.shape[1]))
-                print res.shape
                 print np.unique(res)
                 visual = viz.visualize_segmentation(
                     lbl_pred=lp, lbl_true=lt,
                     img=img, n_class=2)
                 viz_name = ''.join(['visualizations_valid',
-                                    'iter%08d.jpg' % (img_ind - 1)])
+                                    'iter%02d.jpg' % (img_ind - 1)])
                 crf_name = ''.join(['visualizations_valid',
-                                    'crf%08d.jpg' % (img_ind - 1)])
+                                    'crf%02d.jpg' % (img_ind - 1)])
                 skimage.io.imsave(crf_name, res)
                 skimage.io.imsave(viz_name, visual)
                 acc, acc_cls, mean_iu, fwavacc = \
