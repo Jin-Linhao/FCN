@@ -118,6 +118,7 @@ class Tester(object):
                 d.addPairwiseEnergy(feats, compat=3,kernel=dcrf.DIAG_KERNEL,normalization=dcrf.NORMALIZE_SYMMETRIC)
                 Q = d.inference(5)
                 res = np.argmax(Q, axis=0).reshape((img.shape[0], img.shape[1]))
+                print type(res)
                 print np.unique(res)
                 visual = viz.visualize_segmentation(
                     lbl_pred=lp, lbl_true=lt,
