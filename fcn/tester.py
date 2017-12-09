@@ -11,6 +11,10 @@ import viz
 import skimage.io
 import utils
 import collections
+import pydensecrf.densecrf as dcrf
+
+from pydensecrf.utils import compute_unary, create_pairwise_bilateral, \
+    create_pairwise_gaussian, softmax_to_unary
 
 def cross_entropy(input, target, weight=None, size_average=True):
 # input: (n, c, h, w), target: (n, h, w)
@@ -101,11 +105,26 @@ class Tester(object):
             lbl_true = target.data.cpu()
             for img, lt, lp in zip(img, lbl_true, lbl_pred):
                 img, lt = self.untransform(img, lt)
+                softmax = -F.log_softmax(score)
+                softmax = softmax.view((2,h,w))
+                unary = softmax_to_unary(softmax)
+                unary = np.ascontiguousarray(unary)
+                d = dcrf.DenseCRF(256 * 256, 2)
+                d.setUnaryEnergy(unary)
+                feats = create_pairwise_gaussian(sdims=(10, 10), shape=img.shape[:2])
+                d.addPairwiseEnergy(feats, compat=3,kernel=dcrf.DIAG_KERNEL,normalization=dcrf.NORMALIZE_SYMMETRIC)
+                Q = d.inference(5)
+                res = np.argmax(Q, axis=0).reshape((img.shape[0], img.shape[1]))
+                print res.shape
+                print np.unique(res)
                 visual = viz.visualize_segmentation(
                     lbl_pred=lp, lbl_true=lt,
                     img=img, n_class=2)
                 viz_name = ''.join(['visualizations_valid',
                                     'iter%08d.jpg' % (img_ind - 1)])
+                crf_name = ''.join(['visualizations_valid',
+                                    'crf%08d.jpg' % (img_ind - 1)])
+                skimage.io.imsave(crf_name, res)
                 skimage.io.imsave(viz_name, visual)
                 acc, acc_cls, mean_iu, fwavacc = \
                     utils.label_accuracy_score(
