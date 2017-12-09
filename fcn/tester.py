@@ -127,7 +127,7 @@ class Tester(object):
                 viz_name = ''.join(['visualizations_valid',
                                     'iter%02d.jpg' % (img_ind - 1)])
                 crf_name = ''.join(['visualizations_valid',
-                                    'crf%02d.jpg' % (img_ind - 1)])
+                                    'crf%02d.png' % (img_ind - 1)])
                 skimage.io.imsave(crf_name, res)
                 skimage.io.imsave(viz_name, visual)
                 acc, acc_cls, mean_iu, fwavacc = \
