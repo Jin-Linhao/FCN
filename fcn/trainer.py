@@ -63,6 +63,7 @@ class Trainer(object):
         img_ind = 1
         loss_ls = []
         count_ls = []
+        count_w = 1
 
         for batch_idx, (data, target) in tqdm.tqdm(
                 enumerate(self.train_loader), total=len(self.train_loader),
@@ -98,7 +99,8 @@ class Trainer(object):
             if img_ind % 10 == 0:
                 print "loss", loss.data[0]
             loss_ls.append(loss.data[0])
-            count_ls.append(self.iteration)
+            count_ls.append(count_w)
+            count_w = count_w + 1
             #loss = loss / len(data)
             if np.isnan(np.float(loss.data[0])):
                 raise ValueError('loss is nan while training')
