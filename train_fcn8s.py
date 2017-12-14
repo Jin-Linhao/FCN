@@ -23,7 +23,7 @@ from fcn import Tester
 configurations = {
     # same configuration as original fcn32s
     1: dict(
-        max_iteration=2,
+        max_iteration=3,
         lr=1.0e-5,
         momentum=0.99,
         weight_decay=0.0005,
