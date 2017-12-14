@@ -11,6 +11,7 @@ from PIL import Image
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+plt.switch_backend('agg')
 def cross_entropy(input, target, weight=None, size_average=True):
 # input: (n, c, h, w), target: (n, h, w)
     n, c, h, w = input.size()
