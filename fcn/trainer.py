@@ -10,7 +10,7 @@ import tqdm
 from PIL import Image
 import matplotlib.pyplot as plt
 
-
+matplotlib.use('Agg')
 def cross_entropy(input, target, weight=None, size_average=True):
 # input: (n, c, h, w), target: (n, h, w)
     n, c, h, w = input.size()
@@ -30,8 +30,8 @@ def cross_entropy(input, target, weight=None, size_average=True):
 
 
 def show_plot(iteration, loss):
-    a = plt.plot(iteration, loss)
-    plt.imsave('loss.png', a)
+    plt.plot(iteration, loss)
+    plt.imsave('loss.png')
 
 class Trainer(object):
     def __init__(self, cuda, model, optimizer, train_loader, val_loader, max_iter, size_average = False):
