@@ -1,5 +1,6 @@
 import math
 import os
+import cv2
 import os.path as osp
 import torch
 import fcn
@@ -32,7 +33,9 @@ def cross_entropy(input, target, weight=None, size_average=True):
 
 def show_plot(iteration, loss):
     a = plt.plot(iteration, loss)
-    plt.imsave('loss.png', a)
+    plt.show()
+   # cv2.imwrite('loss.png', a)
+
 
 class Trainer(object):
     def __init__(self, cuda, model, optimizer, train_loader, val_loader, max_iter, size_average = False):
