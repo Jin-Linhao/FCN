@@ -30,7 +30,7 @@ configurations = {
         interval_validate=4000,
     ),
     2: dict(
-        max_iteration=1,
+        max_iteration=24,
         lr=1.0e-5,
         momentum=0.99,
         weight_decay=0.0005,

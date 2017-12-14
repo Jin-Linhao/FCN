@@ -60,6 +60,7 @@ class Tester(object):
         n_class = 21
         img_ind = 1
         metrics_dic = {}
+        metrics_dic_crf = {}
 
         for batch_idx, (data, target) in tqdm.tqdm(
                 enumerate(self.test_loader), total=len(self.test_loader),
@@ -100,39 +101,53 @@ class Tester(object):
             measure accuracy by fcn.utils.label_accuracy_score
             """
             metrics = []
+            metrics_crf = []
             img = data.data.cpu()
             lbl_pred = score.data.max(1)[1].cpu().numpy()[:, :, :]
             lbl_true = target.data.cpu()
             for img, lt, lp in zip(img, lbl_true, lbl_pred):
                 img, lt = self.untransform(img, lt)
+                img_wa = ''.join(["img",str(img_ind),'.png'])
+                skimage.io.imsave(img_wa, img)
                 softmax = -F.log_softmax(score)
                 softmax = softmax.view((2,h,w)).data.cpu().numpy()
+                print 'softmax_shape', softmax.shape
                 unary = softmax_to_unary(softmax)
                 unary = np.ascontiguousarray(unary)
-                d = dcrf.DenseCRF(256 * 256, 2)
+                d = dcrf.DenseCRF(256*256, 2)
                 d.setUnaryEnergy(unary)
-                feats = create_pairwise_gaussian(sdims=(10, 10), shape=img.shape[:2])
+                feats = create_pairwise_gaussian(sdims=(5, 5), shape=img.shape[:2])
                 d.addPairwiseEnergy(feats, compat=3,kernel=dcrf.DIAG_KERNEL,normalization=dcrf.NORMALIZE_SYMMETRIC)
                 Q = d.inference(5)
-                res = np.argmax(Q, axis=0).reshape((img.shape[0], img.shape[1]))
-                print res.shape
+                res = (1-np.argmax(Q, axis=0).reshape((img.shape[0], img.shape[1]))).astype(np.uint8)
+                print res.dtype
                 print np.unique(res)
                 visual = viz.visualize_segmentation(
                     lbl_pred=lp, lbl_true=lt,
                     img=img, n_class=2)
+                print visual.dtype
                 viz_name = ''.join(['visualizations_valid',
-                                    'iter%08d.jpg' % (img_ind - 1)])
+                                    'iter%02d.jpg' % (img_ind - 1)])
                 crf_name = ''.join(['visualizations_valid',
-                                    'crf%08d.jpg' % (img_ind - 1)])
+                                    'crf%02d.png' % (img_ind - 1)])
                 skimage.io.imsave(crf_name, res)
                 skimage.io.imsave(viz_name, visual)
                 acc, acc_cls, mean_iu, fwavacc = \
                     utils.label_accuracy_score(
-                        [lt], [lp], n_class=n_class)
+                        [lt], [lp], n_class=2)
                 metrics.append((acc, acc_cls, mean_iu, fwavacc))
+                
+                acc_crf, acc_cls_crf, mean_iu_crf, fwavacc_crf = \
+                    utils.label_accuracy_score(
+                        [lt], [res], n_class=2)
+                metrics_crf.append((acc_crf, acc_cls_crf, mean_iu_crf, fwavacc_crf))
+                
             metrics = np.mean(metrics, axis=0)
             metrics_dic[img_ind - 1] = metrics
+            metrics_crf_ = np.mean(metrics_crf, axis=0)
+            metrics_dic_crf[img_ind - 1] = metrics_crf_
             print 'metrics', metrics_dic
+            print 'metrics_crf', metrics_dic_crf
 
             if self.iteration >= self.max_iter:
                 break
