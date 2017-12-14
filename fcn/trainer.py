@@ -8,10 +8,9 @@ from torch.autograd import Variable
 import torch.nn.functional as F
 import tqdm
 from PIL import Image
-import matplotlib.pyplot as plt
 import matplotlib
-
 matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 def cross_entropy(input, target, weight=None, size_average=True):
 # input: (n, c, h, w), target: (n, h, w)
     n, c, h, w = input.size()
