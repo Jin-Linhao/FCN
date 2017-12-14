@@ -34,7 +34,7 @@ def cross_entropy(input, target, weight=None, size_average=True):
 def show_plot(iteration, loss):
     a = plt.plot(iteration, loss)
     plt.show()
-   # cv2.imwrite('loss.png', a)
+    cv2.imwrite('loss.png', a)
 
 
 class Trainer(object):
