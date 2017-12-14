@@ -8,6 +8,7 @@ from torch.autograd import Variable
 import torch.nn.functional as F
 import tqdm
 from PIL import Image
+import matplotlib.pyplot as plt
 
 
 def cross_entropy(input, target, weight=None, size_average=True):
@@ -26,6 +27,11 @@ def cross_entropy(input, target, weight=None, size_average=True):
     if size_average:
         loss /= mask.data.sum()
     return loss
+
+
+def show_plot(iteration, loss):
+    plt.plot(iteration, loss)
+    plt.imsave('home/yaohuaxu1/FCN/loss.png')
 
 class Trainer(object):
     def __init__(self, cuda, model, optimizer, train_loader, val_loader, max_iter, size_average = False):
@@ -52,6 +58,8 @@ class Trainer(object):
       #  n_class = len(self.train_loader.dataset.class_names)
         n_class = 21
         img_ind = 1
+        loss_ls = []
+        count_ls = []
 
         for batch_idx, (data, target) in tqdm.tqdm(
                 enumerate(self.train_loader), total=len(self.train_loader),
@@ -86,6 +94,8 @@ class Trainer(object):
             loss = cross_entropy(score, target, size_average = self.size_average)
             if img_ind % 10 == 0:
                 print "loss", loss.data[0]
+            loss_ls.append(loss.data[0])
+            count_ls.append(self.iteration)
             #loss = loss / len(data)
             if np.isnan(np.float(loss.data[0])):
                 raise ValueError('loss is nan while training')
@@ -106,6 +116,7 @@ class Trainer(object):
             metrics = np.mean(metrics, axis=0)
 
             if self.iteration >= self.max_iter:
+                show_plot(count_ls, loss_ls)
                 break
     
     def train(self):
@@ -116,5 +127,7 @@ class Trainer(object):
             self.train_epoch()
             if self.iteration >= self.max_iter:
                 break
+
+
 
 
