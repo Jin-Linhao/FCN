@@ -31,8 +31,8 @@ def cross_entropy(input, target, weight=None, size_average=True):
 
 
 def show_plot(iteration, loss):
-    plt.plot(iteration, loss)
-    plt.imsave('loss.png')
+    a = plt.plot(iteration, loss)
+    plt.imsave('loss.png', a)
 
 class Trainer(object):
     def __init__(self, cuda, model, optimizer, train_loader, val_loader, max_iter, size_average = False):
