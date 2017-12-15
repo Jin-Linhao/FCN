@@ -120,7 +120,7 @@ class Trainer(object):
             metrics = np.mean(metrics, axis=0)
 
             if self.iteration >= self.max_iter:
-                return count_ls, loss_ls
+                break
 
 
     
@@ -131,9 +131,7 @@ class Trainer(object):
         for epoch in tqdm.trange(self.epoch, max_epoch,
                                  desc='Train', ncols=80):
             self.epoch = epoch
-            count, loss = self.train_epoch()
-            cou = cou + count
-            los = loss + los
+            self.train_epoch()
             if self.iteration >= self.max_iter:
                 show_plot(cou, los)
                 break
