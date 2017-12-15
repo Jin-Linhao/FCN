@@ -121,7 +121,8 @@ class Trainer(object):
 
             if self.iteration >= self.max_iter:
                 break
-
+            else:
+                return count_ls, loss_ls
 
     
     def train(self):
@@ -131,7 +132,9 @@ class Trainer(object):
         for epoch in tqdm.trange(self.epoch, max_epoch,
                                  desc='Train', ncols=80):
             self.epoch = epoch
-            self.train_epoch()
+            count, loss = self.train_epoch()
+            cou = cou + count
+            los = loss + los
             if self.iteration >= self.max_iter:
                 show_plot(cou, los)
                 break
