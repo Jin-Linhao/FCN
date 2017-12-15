@@ -99,7 +99,6 @@ class Trainer(object):
 #             if img_ind % 10 == 0:
 #                 print "loss", loss.data[0]
             loss_ls.append(loss.data[0])
-            count_ls.append(count_w)
             dic[self.iteration] = loss.data[0]
             print dic
             #loss = loss / len(data)
