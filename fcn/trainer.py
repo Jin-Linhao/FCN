@@ -99,8 +99,7 @@ class Trainer(object):
 #             if img_ind % 10 == 0:
 #                 print "loss", loss.data[0]
             loss_ls.append(loss.data[0])
-            dic[self.iteration] = loss.data[0]
-            print dic
+            count_ls.append(self.iteration)
             #loss = loss / len(data)
             if np.isnan(np.float(loss.data[0])):
                 raise ValueError('loss is nan while training')
@@ -121,16 +120,22 @@ class Trainer(object):
             metrics = np.mean(metrics, axis=0)
 
             if self.iteration >= self.max_iter:
-                show_plot(count_ls, loss_ls)
-                break
+                return count_ls, loss_ls
+
+
     
     def train(self):
         max_epoch = int(math.ceil(1. * self.max_iter / len(self.train_loader)))
+        cou = []
+        los = []
         for epoch in tqdm.trange(self.epoch, max_epoch,
                                  desc='Train', ncols=80):
             self.epoch = epoch
-            self.train_epoch()
+            count, loss = self.train_epoch()
+            cou = cou + count
+            los = loss + los
             if self.iteration >= self.max_iter:
+                show_plot(cou, los)
                 break
 
 
